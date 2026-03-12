@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XOR Simmetrico - Demo 1</title>
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#eef4ff,#dbe7f7);color:#1f2d3d;padding:24px}
+    .wrap{max-width:1100px;margin:0 auto}
+    .card{background:#ffffffdd;border:1px solid #c9d7ea;border-radius:18px;box-shadow:0 10px 24px rgba(0,0,0,.08);padding:20px;margin-bottom:20px}
+    h1,h2{margin-top:0}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    label{display:block;font-weight:bold;margin-bottom:6px}
+    input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid #b6c7dd;font-size:16px;box-sizing:border-box}
+    .out{background:#f6faff;border:1px solid #d8e4f3;border-radius:12px;padding:12px;min-height:52px;white-space:pre-wrap;word-break:break-word;font-family:Consolas,monospace}
+    .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#315f9a;color:white;font-size:12px;margin-bottom:10px}
+    .note{line-height:1.6;color:#405468}
+    @media (max-width:800px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="tag">Demo 1</div>
+      <h1>Crittografia simmetrica con XOR</h1>
+      <p class="note">Inserisci un messaggio e una chiave. Il sito converte i caratteri in binario ASCII, applica XOR bit per bit e mostra il risultato cifrato.</p>
+    </div>
+
+    <div class="card grid">
+      <div>
+        <label for="msg">Messaggio</label>
+        <input id="msg" value="CIAO">
+      </div>
+      <div>
+        <label for="key">Chiave</label>
+        <input id="key" value="KEY">
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Testo originale</h2>
+        <div id="plainText" class="out"></div>
+      </div>
+      <div class="card">
+        <h2>Testo cifrato</h2>
+        <div id="cipherText" class="out"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Passaggi binari</h2>
+      <div id="binarySteps" class="out"></div>
+    </div>
+
+    <div class="card">
+      <h2>Decifratura</h2>
+      <div id="decodeSteps" class="out"></div>
+    </div>
+  </div>
+
+  <script>
+    const msgInput = document.getElementById('msg');
+    const keyInput = document.getElementById('key');
+    const plainText = document.getElementById('plainText');
+    const cipherText = document.getElementById('cipherText');
+    const binarySteps = document.getElementById('binarySteps');
+    const decodeSteps = document.getElementById('decodeSteps');
+
+    function toBinary8(n){
+      return n.toString(2).padStart(8,'0');
+    }
+
+    function xorEncrypt(message, key){
+      if(!key) return null;
+      let cipher = '';
+      let stepText = '';
+      let decodeText = '';
+
+      for(let i=0; i<message.length; i++){
+        const mChar = message[i];
+        const kChar = key[i % key.length];
+        const mCode = message.charCodeAt(i);
+        const kCode = kChar.charCodeAt(0);
+        const xCode = mCode ^ kCode;
+        const mBin = toBinary8(mCode);
+        const kBin = toBinary8(kCode);
+        const xBin = toBinary8(xCode);
+
+        cipher += String.fromCharCode(xCode);
+
+        stepText += 'Lettera ' + (i+1) + '\n' +
+          'Messaggio: ' + mChar + '  ASCII: ' + mCode + '  Binario: ' + mBin + '\n' +
+          'Chiave:    ' + kChar + '  ASCII: ' + kCode + '  Binario: ' + kBin + '\n' +
+          'XOR:                           ' + xBin + '  (' + xCode + ')\n\n';
+
+        const backCode = xCode ^ kCode;
+        decodeText += 'Decifra lettera ' + (i+1) + ': ' + xCode + ' XOR ' + kCode + ' = ' + backCode + '  →  ' + String.fromCharCode(backCode) + '\n';
+      }
+
+      return {cipher, stepText, decodeText};
+    }
+
+    function displayCipherText(text){
+      let parts = [];
+      for(let i=0;i<text.length;i++){ parts.push(text.charCodeAt(i)); }
+      return 'Caratteri cifrati (codici): ' + parts.join(' ');
+    }
+
+    function update(){
+      const message = msgInput.value;
+      const key = keyInput.value;
+      plainText.textContent = message || '(vuoto)';
+
+      if(!key){
+        cipherText.textContent = 'Inserisci una chiave.';
+        binarySteps.textContent = '';
+        decodeSteps.textContent = '';
+        return;
+      }
+
+      const result = xorEncrypt(message, key);
+      cipherText.textContent = displayCipherText(result.cipher);
+      binarySteps.textContent = result.stepText || 'Nessun dato';
+      decodeSteps.textContent = result.decodeText || 'Nessun dato';
+    }
+
+    msgInput.addEventListener('input', update);
+    keyInput.addEventListener('input', update);
+    update();
+  </script>
+</body>
+</html>
