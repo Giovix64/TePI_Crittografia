@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Laboratorio di Crittografia</title>
+        <style>
+            :root {
+                --ink: #2a2218;
+                --bronze: #7d6140;
+                --accent: #a17843;
+                --paper: #ead9bb;
+            }
+
+            body {
+                margin: 0;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-family: Georgia, "Times New Roman", serif;
+                background: radial-gradient(
+                    circle at top,
+                    #f5eee3 0%,
+                    #e7dbc7 40%,
+                    #cdb792 100%
+                );
+                color: var(--ink);
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                text-transform: uppercase;
+                letter-spacing: 0.15em;
+                margin-bottom: 40px;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-container {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .btn {
+                display: inline-block;
+                padding: 20px 40px;
+                font-size: 1.2rem;
+                font-weight: bold;
+                text-decoration: none;
+                color: #fff8ea;
+                background: linear-gradient(180deg, #8f6a3f, #6e5030);
+                border: 2px solid var(--ink);
+                border-radius: 12px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+                cursor: pointer;
+                min-width: 300px;
+            }
+
+            .btn:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+                background: linear-gradient(180deg, #a17843, #7d6140);
+            }
+
+            .btn span {
+                display: block;
+                font-size: 0.8rem;
+                font-weight: normal;
+                margin-top: 5px;
+                opacity: 0.9;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Archivio Crittografico</h1>
+
+        <nav class="nav-container">
+            <a href="CRITTOGRAFIA_CESARE.html" class="btn">
+                Cifrario di Cesare
+                <span>Demo grafica con disco rotante</span>
+            </a>
+
+            <a href="CRITTOGRAFIA_MONO_POLI.html" class="btn">
+                Mono & Polialfabetici
+                <span>Confronto Cesare vs Vigenère</span>
+            </a>
+        </nav>
+    </body>
+</html>
